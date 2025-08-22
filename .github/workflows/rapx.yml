@@ -30,7 +30,7 @@ jobs:
           ./install
 
       - name: Set up RAPx environment
-          run: |
+        run: |
             RUSTUP_TOOLCHAIN=$(rustup show active-toolchain | cut -d ' ' -f 1)
             echo "RUSTUP_TOOLCHAIN=$RUSTUP_TOOLCHAIN" >> $GITHUB_ENV
             CURRENT_DIR=$(pwd)

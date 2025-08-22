@@ -1,0 +1,44 @@
+name: RAPx
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  RAPx_VERSION: "56daf5e7ada4e722a8643ba2b640d27ae0907496"
+
+jobs:
+  check-with-rapx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Clone RAPx
+        run: |
+          git clone https://github.com/Artisan-Lab/RAPx.git
+          cd RAPx
+          git checkout $RAPX_VERSION
+
+      - name: Install RAPx
+        run: |
+          cd RAPx
+          ./install
+
+      - name: Set up RAPx environment
+          run: |
+            RUSTUP_TOOLCHAIN=$(rustup show active-toolchain | cut -d ' ' -f 1)
+            echo "RUSTUP_TOOLCHAIN=$RUSTUP_TOOLCHAIN" >> $GITHUB_ENV
+            CURRENT_DIR=$(pwd)
+            RUST_SRC_PATH="$CURRENT_DIR/library"
+            echo "__CARGO_TESTS_ONLY_SRC_ROOT=$RUST_SRC_PATH" >> $GITHUB_ENV
+
+      - name: Run RAPx Verification
+        run: |
+          cargo new dummy_crate
+          cd dummy_crate
+          cargo +$RUSTUP_TOOLCHAIN rapx -verify -Z build-std=panic_abort,core,std --target x86_64-unknown-linux-gnu

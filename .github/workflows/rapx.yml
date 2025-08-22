@@ -3,9 +3,9 @@ name: RAPx
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main,rapx-dev]
   pull_request:
-    branches: [main]
+    branches: [main,rapx-dev]
 
 env:
   RAPx_VERSION: "56daf5e7ada4e722a8643ba2b640d27ae0907496"

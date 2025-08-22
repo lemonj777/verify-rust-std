@@ -27,7 +27,7 @@ jobs:
       - name: Install RAPx
         run: |
           cd RAPx
-          ./install
+          ./install.sh
 
       - name: Set up RAPx environment
         run: |

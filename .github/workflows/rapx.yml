@@ -8,7 +8,7 @@ on:
     branches: [main,rapx-dev]
 
 env:
-  RAPx_VERSION: "56daf5e7ada4e722a8643ba2b640d27ae0907496"
+  RAPx_VERSION: "aa0a567fd080fbb5ab1ece4740bad3b5665ca514"
 
 jobs:
   check-with-rapx:
@@ -31,8 +31,8 @@ jobs:
 
       - name: Set up RAPx environment
         run: |
-            # RUSTUP_TOOLCHAIN=$(rustup show active-toolchain | cut -d ' ' -f 1)
-            # echo "RUSTUP_TOOLCHAIN=$RUSTUP_TOOLCHAIN" >> $GITHUB_ENV
+            RUSTUP_TOOLCHAIN=$(rustup show active-toolchain | cut -d ' ' -f 1)
+            echo "RUSTUP_TOOLCHAIN=$RUSTUP_TOOLCHAIN" >> $GITHUB_ENV
             CURRENT_DIR=$(pwd)
             RUST_SRC_PATH="$CURRENT_DIR/library"
             echo "__CARGO_TESTS_ONLY_SRC_ROOT=$RUST_SRC_PATH" >> $GITHUB_ENV
@@ -41,4 +41,4 @@ jobs:
         run: |
           cargo new dummy_crate
           cd dummy_crate
-          cargo rapx -verify -Z build-std=panic_abort,core,std --target x86_64-unknown-linux-gnu
+          cargo +$RUSTUP_TOOLCHAIN rapx -verify-std -Z build-std=panic_abort,core,std --target x86_64-unknown-linux-gnu

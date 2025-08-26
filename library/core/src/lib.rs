@@ -205,7 +205,8 @@
 #![feature(wasm_target_feature)]
 #![feature(x86_amx_intrinsics)]
 // tidy-alphabetical-end
-
+#![feature(register_tool)]
+#![register_tool(rapx)]
 // allow using `core::` in intra-doc links
 #[allow(unused_extern_crates)]
 extern crate self as core;

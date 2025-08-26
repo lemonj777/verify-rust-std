@@ -41,4 +41,4 @@ jobs:
         run: |
           cargo new dummy_crate
           cd dummy_crate
-          cargo +$RUSTUP_TOOLCHAIN rapx -verify-std -Z build-std=panic_abort,core,std --target x86_64-unknown-linux-gnu
+          cargo +$RUSTUP_TOOLCHAIN rapx -verify-std -- -Zbuild-std=panic_abort,core,std --target x86_64-unknown-linux-gnu

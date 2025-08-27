@@ -38,7 +38,7 @@ jobs:
 
       - name: Install safety_tool
         run: |
-          cd tag-std/safety_tool
+          cd tag-std/safety-tool
           TOOL_DIR=$(pwd)
           echo "TOOL_DIR=$TOOL_DIR" >> $GITHUB_ENV
           ./run.sh

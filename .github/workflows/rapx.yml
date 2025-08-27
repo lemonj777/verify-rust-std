@@ -41,6 +41,7 @@ jobs:
           cd tag-std/safety-tool
           TOOL_DIR=$(pwd)
           echo "TOOL_DIR=$TOOL_DIR" >> $GITHUB_ENV
+          cargo install cargo-expand
           ./run.sh
 
       - name: Set up RAPx environment

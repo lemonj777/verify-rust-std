@@ -58,5 +58,5 @@ jobs:
           cd dummy_crate
           cargo +$RUSTUP_TOOLCHAIN rapx -verify-std -- -Zbuild-std=panic_abort,core,std --target x86_64-unknown-linux-gnu \
           -L $TOOL_DIR/target/safety-tool/lib --extern=safety_macro \
-            -Zcrate-attr=feature(register_tool) -Zcrate-attr=register_tool(rapx) \
+            -Zcrate-attr=feature\(register_tool\) -Zcrate-attr=register_tool\(rapx\) \
             --extern=safety=$TOOL_DIR/target/safety-tool/lib/libsafety_macro.so

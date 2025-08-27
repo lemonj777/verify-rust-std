@@ -9,7 +9,7 @@ on:
 
 env:
   RAPx_VERSION: "aa0a567fd080fbb5ab1ece4740bad3b5665ca514"
-  SAFETY_TOOL_VERSION: ""
+  SAFETY_TOOL_VERSION: "e3e744bad0096ee1b4988dbe9a7e3f75e43e397d"
 
 jobs:
   check-with-rapx:
@@ -32,7 +32,7 @@ jobs:
 
       - name: Clone safety_tool
         run: |
-          git clone https://github.com/Artisan-Lab/RAPx.git
+          git clone https://github.com/Artisan-Lab/tag-std.git
           cd tag-std
           git checkout $SAFETY_TOOL_VERSION
 

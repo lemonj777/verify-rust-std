@@ -9,6 +9,7 @@ on:
 
 env:
   RAPx_VERSION: "aa0a567fd080fbb5ab1ece4740bad3b5665ca514"
+  SAFETY_TOOL_VERSION: ""
 
 jobs:
   check-with-rapx:
@@ -29,6 +30,19 @@ jobs:
           cd RAPx
           ./install.sh
 
+      - name: Clone safety_tool
+        run: |
+          git clone https://github.com/Artisan-Lab/RAPx.git
+          cd tag-std
+          git checkout $SAFETY_TOOL_VERSION
+
+      - name: Install safety_tool
+        run: |
+          cd tag-std/safety_tool
+          TOOL_DIR=$(pwd)
+          echo "TOOL_DIR=$TOOL_DIR" >> $GITHUB_ENV
+          ./run.sh
+
       - name: Set up RAPx environment
         run: |
             RUSTUP_TOOLCHAIN=$(rustup show active-toolchain | cut -d ' ' -f 1)
@@ -41,4 +55,7 @@ jobs:
         run: |
           cargo new dummy_crate
           cd dummy_crate
-          cargo +$RUSTUP_TOOLCHAIN rapx -verify-std -- -Zbuild-std=panic_abort,core,std --target x86_64-unknown-linux-gnu
+          cargo +$RUSTUP_TOOLCHAIN rapx -verify-std -- -Zbuild-std=panic_abort,core,std --target x86_64-unknown-linux-gnu \
+          -L $TOOL_DIR/target/safety-tool/lib --extern=safety_macro \
+            -Zcrate-attr=feature(register_tool) -Zcrate-attr=register_tool(rapx) \
+            --extern=safety=$TOOL_DIR/target/safety-tool/lib/libsafety_macro.so

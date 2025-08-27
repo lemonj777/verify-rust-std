@@ -21,6 +21,9 @@ use crate::{ascii, mem};
 
 pub mod pattern;
 
+#[cfg(rapx)]
+use crate::rapx_macro::safety;
+
 mod lossy;
 #[unstable(feature = "str_from_raw_parts", issue = "119206")]
 pub use converts::{from_raw_parts, from_raw_parts_mut};
@@ -787,6 +790,8 @@ impl str {
     #[stable(feature = "str_slice_mut", since = "1.5.0")]
     #[deprecated(since = "1.29.0", note = "use `get_unchecked_mut(begin..end)` instead")]
     #[inline]
+    #[cfg_attr(rapx, safety {})]
+    #[rapx::proof]
     pub unsafe fn slice_mut_unchecked(&mut self, begin: usize, end: usize) -> &mut str {
         // SAFETY: the caller must uphold the safety contract for `get_unchecked_mut`;
         // the slice is dereferenceable because `self` is a safe reference.

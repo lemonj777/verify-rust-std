@@ -56,7 +56,7 @@ jobs:
         run: |
           cd library/core
           cargo clean
-          SAFETY_TOOL=safety-tool-rfl RUSTFLAGS=--cfg=rapx cargo safety-tool
+          SAFETY_TOOL=safety-tool-rfl RUSTFLAGS="--cfg=rapx" cargo safety-tool
           rm ../data.sqlite3
 
       - name: Set up RAPx environment

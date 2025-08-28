@@ -46,7 +46,7 @@ jobs:
           rm -f rust-toolchain.toml
           rustc gen_rust_toolchain_toml.rs && ./gen_rust_toolchain_toml std
           export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib
-          export DYLD_LIBRARY_PATH=$(rustc --print sysroot)/lib  # macOS 支持
+          export DYLD_LIBRARY_PATH=$(rustc --print sysroot)/lib
           cargo install --path . --locked -Fstd
           safety-tool --version
           safety-tool-rfl build-dev
@@ -54,6 +54,8 @@ jobs:
 
       - name: Check libcore
         run: |
+          LIB_DIR=$(pwd)
+          echo "LIB_DIR=$LIB_DIR" >> $GITHUB_ENV
           cd /library/core
           cargo clean
           SAFETY_TOOL=safety-tool-rfl cargo safety-tool

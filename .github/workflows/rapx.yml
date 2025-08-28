@@ -54,9 +54,7 @@ jobs:
 
       - name: Check libcore
         run: |
-          LIB_DIR=$(pwd)
-          echo "LIB_DIR=$LIB_DIR" >> $GITHUB_ENV
-          cd /library/core
+          cd library/core
           cargo clean
           SAFETY_TOOL=safety-tool-rfl cargo safety-tool
           rm ../data.sqlite3

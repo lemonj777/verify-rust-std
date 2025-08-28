@@ -38,11 +38,26 @@ jobs:
 
       - name: Install safety_tool
         run: |
+          cargo install cargo-expand
+          export VERIFY_RUST_STD=1
           cd tag-std/safety-tool
           TOOL_DIR=$(pwd)
           echo "TOOL_DIR=$TOOL_DIR" >> $GITHUB_ENV
-          cargo install cargo-expand
-          ./run.sh
+          rm -f rust-toolchain.toml
+          rustc gen_rust_toolchain_toml.rs && ./gen_rust_toolchain_toml std
+          export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib
+          export DYLD_LIBRARY_PATH=$(rustc --print sysroot)/lib  # macOS 支持
+          cargo install --path . --locked -Fstd
+          safety-tool --version
+          safety-tool-rfl build-dev
+          safety-tool-rfl --display-extra-rustc-args
+
+      - name: Check libcore
+        run: |
+          cd /library/core
+          cargo clean
+          SAFETY_TOOL=safety-tool-rfl cargo safety-tool
+          rm ../data.sqlite3
 
       - name: Set up RAPx environment
         run: |
@@ -56,5 +71,5 @@ jobs:
         run: |
           cargo new dummy_crate
           cd dummy_crate
-          export RUSTFLAGS="-Zcrate-attr=feature(register_tool) -Zcrate-attr=register_tool(rapx)"
+          export RUSTFLAGS="-L $TOOL_DIR/target/safety-tool/lib --extern=safety_macro -Zcrate-attr=feature(register_tool) -Zcrate-attr=register_tool(rapx)"
           cargo +$RUSTUP_TOOLCHAIN rapx -verify-std -- -Zbuild-std=panic_abort,core,std --target x86_64-unknown-linux-gnu

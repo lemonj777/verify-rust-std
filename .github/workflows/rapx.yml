@@ -44,9 +44,9 @@ jobs:
           TOOL_DIR=$(pwd)
           echo "TOOL_DIR=$TOOL_DIR" >> $GITHUB_ENV
           rm -f rust-toolchain.toml
-          rustc gen_rust_toolchain_toml.rs && ./gen_rust_toolchain_toml std
+          ./gen_rust_toolchain_toml.rs std
           export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib
-          export DYLD_LIBRARY_PATH=$(rustc --print sysroot)/lib
+          # export DYLD_LIBRARY_PATH=$(rustc --print sysroot)/lib
           cargo install --path . --locked -Fstd
           safety-tool --version
           safety-tool-rfl build-dev

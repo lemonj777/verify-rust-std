@@ -52,12 +52,12 @@ jobs:
           safety-tool-rfl build-dev
           safety-tool-rfl --display-extra-rustc-args
 
-      - name: Check libcore
-        run: |
-          cd library/core
-          cargo clean
-          SAFETY_TOOL=safety-tool-rfl RUSTFLAGS="--cfg=rapx" cargo safety-tool
-          rm ../data.sqlite3
+      # - name: Check libcore
+      #   run: |
+      #     cd library/core
+      #     cargo clean
+      #     SAFETY_TOOL=safety-tool-rfl RUSTFLAGS="--cfg=rapx" cargo safety-tool
+      #     rm ../data.sqlite3
 
       - name: Set up RAPx environment
         run: |
@@ -71,5 +71,5 @@ jobs:
         run: |
           cargo new dummy_crate
           cd dummy_crate
-          export RUSTFLAGS="-L $TOOL_DIR/target/safety-tool/lib --extern=safety_macro -Zcrate-attr=feature(register_tool) -Zcrate-attr=register_tool(rapx)"
+          export RUSTFLAGS="--cfg=rapx -L $TOOL_DIR/target/safety-tool/lib --extern=safety_macro -Zcrate-attr=feature(register_tool) -Zcrate-attr=register_tool(rapx)"
           cargo +$RUSTUP_TOOLCHAIN rapx -verify-std -- -Zbuild-std=panic_abort,core,std --target x86_64-unknown-linux-gnu

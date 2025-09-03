@@ -19,27 +19,31 @@ jobs:
         with:
           submodules: true
 
-      - name: Clone safety_tool
+      - name: Clone and setup safety_tool
         run: |
           git clone https://github.com/Artisan-Lab/tag-std.git
           cd tag-std
           git checkout $SAFETY_TOOL_VERSION
-
-      - name: Install safety_tool
-        run: |
           cargo install cargo-expand
-          cd tag-std/safety-tool
+          cd safety-tool
           TOOL_DIR=$(pwd)
           echo "TOOL_DIR=$TOOL_DIR" >> $GITHUB_ENV
           rm -f rust-toolchain.toml
           ./gen_rust_toolchain_toml.rs std
+
+      - name: Install safety_tool
+        run: |
+          export VERIFY_RUST_STD=1
           export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib
           cargo install --path . --locked -Fstd
           safety-tool --version
-          export VERIFY_RUST_STD=1
           safety-tool-rfl build-dev
           safety-tool-rfl --display-extra-rustc-args
-          cd ../../library/core
+
+      - name: Compile lib_core
+        run: |
+          export VERIFY_RUST_STD=1
+          cd library/core
           cargo clean
           SAFETY_TOOL=safety-tool-rfl RUSTFLAGS="--cfg=rapx" cargo safety-tool
           rm ../data.sqlite3

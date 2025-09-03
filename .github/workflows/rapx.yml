@@ -29,10 +29,11 @@ jobs:
         run: |
           cargo install cargo-expand
           cd tag-std/safety-tool
+          TOOL_DIR=$(pwd)
+          echo "TOOL_DIR=$TOOL_DIR" >> $GITHUB_ENV
           rm -f rust-toolchain.toml
           ./gen_rust_toolchain_toml.rs std
           export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib
-          # export DYLD_LIBRARY_PATH=$(rustc --print sysroot)/lib
           cargo install --path . --locked -Fstd
           safety-tool --version
           export VERIFY_RUST_STD=1

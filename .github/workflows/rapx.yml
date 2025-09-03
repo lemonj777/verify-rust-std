@@ -35,7 +35,7 @@ jobs:
         run: |
           export VERIFY_RUST_STD=1
           export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib
-          cd tag-std/safety_tool
+          cd tag-std/safety-tool
           cargo install --path . --locked -Fstd
           safety-tool --version
           safety-tool-rfl build-dev

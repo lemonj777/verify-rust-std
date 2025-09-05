@@ -41,15 +41,11 @@ jobs:
           safety-tool-rfl build-dev
           safety-tool-rfl --display-extra-rustc-args
 
-      - name: Clone RAPx
+      - name: Clone and install RAPx
         run: |
           git clone https://github.com/Artisan-Lab/RAPx.git
           cd RAPx
           git checkout $RAPX_VERSION
-
-      - name: Install RAPx
-        run: |
-          cd RAPx
           ./install.sh
 
       - name: Set up RAPx environment
@@ -64,5 +60,6 @@ jobs:
         run: |
           cargo new dummy_crate
           cd dummy_crate
+          export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib
           export RUSTFLAGS="--cfg=rapx -L $TOOL_DIR/target/safety-tool/lib --extern=safety_macro -Zcrate-attr=feature(register_tool) -Zcrate-attr=register_tool(rapx)"
           cargo +$RUSTUP_TOOLCHAIN rapx -verify-std -- -Zbuild-std=panic_abort,core,std --target x86_64-unknown-linux-gnu

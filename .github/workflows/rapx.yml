@@ -9,7 +9,7 @@ on:
 
 env:
   RAPx_VERSION: "aa0a567fd080fbb5ab1ece4740bad3b5665ca514"
-  SAFETY_TOOL_VERSION: "e3e744bad0096ee1b4988dbe9a7e3f75e43e397d"
+  SAFETY_TOOL_VERSION: "03114f33d10aeffae3f4bf085e984c87820f9230"
 
 jobs:
   check-with-rapx:
@@ -41,7 +41,7 @@ jobs:
           safety-tool-rfl build-dev
           safety-tool-rfl --display-extra-rustc-args
 
-      - name: Compile lib_core
+      - name: Compile RAPx's attributes in lib_core
         run: |
           export VERIFY_RUST_STD=1
           cd library/core

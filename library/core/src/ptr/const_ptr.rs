@@ -7,6 +7,8 @@ use crate::intrinsics::const_eval_select;
 use crate::kani;
 use crate::mem::{self, SizedTypeProperties};
 use crate::slice::{self, SliceIndex};
+#[cfg(rapx)]
+use crate::rapx_macro::safety;
 
 impl<T: PointeeSized> *const T {
     #[doc = include_str!("docs/is_null.md")]

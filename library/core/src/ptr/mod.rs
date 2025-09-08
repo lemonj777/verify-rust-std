@@ -409,6 +409,8 @@ use crate::marker::{FnPtr, PointeeSized};
 use crate::mem::{self, MaybeUninit, SizedTypeProperties};
 use crate::num::NonZero;
 use crate::{fmt, hash, intrinsics, ub_checks};
+#[cfg(rapx)]
+use crate::rapx_macro::safety;
 
 mod alignment;
 #[unstable(feature = "ptr_alignment_type", issue = "102070")]
@@ -1663,6 +1665,9 @@ pub const unsafe fn replace<T>(dst: *mut T, src: T) -> T {
 #[rustc_const_stable(feature = "const_ptr_read", since = "1.71.0")]
 #[track_caller]
 #[rustc_diagnostic_item = "ptr_read"]
+#[cfg_attr(rapx, safety {ValidPtr(src, T, 1)})]
+#[cfg_attr(rapx, safety {Typed(src, T)})]
+#[cfg_attr(rapx, safety {Align(src, T)})]
 pub const unsafe fn read<T>(src: *const T) -> T {
     // It would be semantically correct to implement this via `copy_nonoverlapping`
     // and `MaybeUninit`, as was done before PR #109035. Calling `assume_init`

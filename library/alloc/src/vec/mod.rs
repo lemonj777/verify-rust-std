@@ -93,6 +93,8 @@ use crate::borrow::{Cow, ToOwned};
 use crate::boxed::Box;
 use crate::collections::TryReserveError;
 use crate::raw_vec::RawVec;
+#[cfg(rapx)]
+use crate::rapx_macro::safety;
 
 mod extract_if;
 
@@ -2715,6 +2717,7 @@ impl<T, A: Allocator> Vec<T, A> {
     #[inline]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[rustc_diagnostic_item = "vec_pop"]
+    #[cfg_attr(rapx, safety {proof})]
     pub fn pop(&mut self) -> Option<T> {
         if self.len == 0 {
             None

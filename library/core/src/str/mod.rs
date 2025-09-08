@@ -790,8 +790,6 @@ impl str {
     #[stable(feature = "str_slice_mut", since = "1.5.0")]
     #[deprecated(since = "1.29.0", note = "use `get_unchecked_mut(begin..end)` instead")]
     #[inline]
-    #[cfg_attr(rapx, safety {proof})]
-    // #[rapx::inner()]
     pub unsafe fn slice_mut_unchecked(&mut self, begin: usize, end: usize) -> &mut str {
         // SAFETY: the caller must uphold the safety contract for `get_unchecked_mut`;
         // the slice is dereferenceable because `self` is a safe reference.

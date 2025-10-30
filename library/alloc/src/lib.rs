@@ -203,7 +203,7 @@
 // from other crates, but since this can only appear for lang items, it doesn't seem worth fixing.
 #![feature(intra_doc_pointers)]
 
-pub mod rapx_macro {
+mod rapx_macro {
     pub use safety_macro::safety;
 }
 

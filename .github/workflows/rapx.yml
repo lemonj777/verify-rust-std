@@ -3,13 +3,13 @@ name: RAPx
 on:
   workflow_dispatch:
   push:
-    branches: [main,rapx-dev]
+    branches: [main,rapx-verify-std]
   pull_request:
-    branches: [main,rapx-dev]
+    branches: [main,rapx-verify-std]
 
 env:
-  RAPx_VERSION: "aa0a567fd080fbb5ab1ece4740bad3b5665ca514"
-  SAFETY_TOOL_VERSION: "03114f33d10aeffae3f4bf085e984c87820f9230"
+  RAPx_VERSION: "3262f1304a900434cdc02a873d3f84ca9574fbed"
+  SAFETY_TOOL_VERSION: "c4d8734eeebbdd9519eee2417ea6e2e1ffe4387d"
 
 jobs:
   check-with-rapx:

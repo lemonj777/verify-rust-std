@@ -3,9 +3,9 @@ name: RAPx
 on:
   workflow_dispatch:
   push:
-    branches: [main,rapx-verify-std]
+    branches: [main,rapx-dev]
   pull_request:
-    branches: [main,rapx-verify-std]
+    branches: [main,rapx-dev]
 
 env:
   RAPx_VERSION: "3262f1304a900434cdc02a873d3f84ca9574fbed"

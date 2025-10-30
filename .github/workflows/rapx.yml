@@ -28,8 +28,8 @@ jobs:
           cd safety-tool
           TOOL_DIR=$(pwd)
           echo "TOOL_DIR=$TOOL_DIR" >> $GITHUB_ENV
-          rm -f rust-toolchain.toml
-          ./gen_rust_toolchain_toml.rs std
+          # rm -f rust-toolchain.toml
+          # ./gen_rust_toolchain_toml.rs std
 
       - name: Install safety_tool
         run: |

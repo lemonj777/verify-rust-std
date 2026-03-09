@@ -1,3 +1,16 @@
+name: RAPx
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main,rapx-verify-std]
+  pull_request:
+    branches: [main,rapx-verify-std]
+
+env:
+  RAPx_VERSION: "2f8cefc8a4bbd7c347e02e97c61de1d8224776ba"
+  SAFETY_TOOL_VERSION: "6b77419da66865bb5a36b6c9baec71b3e833d3c9"
+
 jobs:
   check-with-rapx:
     runs-on: ubuntu-latest

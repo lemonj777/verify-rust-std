@@ -51,8 +51,12 @@ jobs:
 
       - name: Set up RAPx environment
         run: |
+            cd RAPx
             RUSTUP_TOOLCHAIN=$(rustup show active-toolchain | cut -d ' ' -f 1)
             echo "RUSTUP_TOOLCHAIN=$RUSTUP_TOOLCHAIN" >> $GITHUB_ENV
+            RAPX_SYSROOT=$(rustc --print sysroot)
+            echo "RAPX_LD_LIBRARY_PATH=$RAPX_SYSROOT/lib" >> $GITHUB_ENV
+            cd ..
             CURRENT_DIR=$(pwd)
             RUST_SRC_PATH="$CURRENT_DIR/library"
             echo "__CARGO_TESTS_ONLY_SRC_ROOT=$RUST_SRC_PATH" >> $GITHUB_ENV
@@ -61,6 +65,6 @@ jobs:
         run: |
           cargo new dummy_crate
           cd dummy_crate
-          export LD_LIBRARY_PATH=$(rustc +$RUSTUP_TOOLCHAIN --print sysroot)/lib
+          export LD_LIBRARY_PATH=$RAPX_LD_LIBRARY_PATH
           export RUSTFLAGS="--cfg=rapx -L $TOOL_DIR/target/safety-tool/lib --extern=safety_macro -Zcrate-attr=feature(register_tool) -Zcrate-attr=register_tool(rapx)"
           cargo +$RUSTUP_TOOLCHAIN rapx -verify-std -- -Zbuild-std=panic_abort,core,std --target x86_64-unknown-linux-gnu
